@@ -1,0 +1,18 @@
+A1 gjør klar for å motta passcode entry .. init_passcode_entry
+A2 adder tall til passcode_buffer
+A3 verify login - returnerer Y eller N og flasher lys 
+
+#obs, for agent er a4-a6 det samme, men tenker at vi bør beholde for oversikt
+
+A4 reset_agent_attributes - nuller ut passcode_buffer, lid og ldur
+A5 gjør det samme som A4 
+A6 reset_agent_attributes - samme som de to over
+A7 set_led_id - velger hvilken led som skal blinke
+A8 begin_dur_entry - initierer inntasting av lengde på blink
+A9 append_dur_digit - legger tall til strengen som bestemmer hvor lenge den skal blinke
+A10 light_the_led - blinker 
+A11  = A4,A5,A6
+A12 validate_passcode_change, blinker med led om det gyldig eller ikke, returnerer ingenting 
+(A13 change_passcode) A13 kan være inni A12, mest hensiktsmessig 
+
+Kan kutte ned til A1, A2, A3, A3, A7, A8, A9, A10, A12 
