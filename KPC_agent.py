@@ -108,7 +108,7 @@ class KPC_agent():
         if sig == "A1":
             self.init_passcode_entry()
         elif sig == "A2":
-            self.add_to_passcode_buffer()
+            self.add_to_passcode_buffer(sig)
         elif sig == "A3":
             self.verify_login()
         elif sig == "A4":
@@ -118,11 +118,11 @@ class KPC_agent():
         elif sig == "A6":
             self.reset_agent_attributes()
         elif sig == "A7":
-            self.set_led_id()
+            self.set_led_id(sig)
         elif sig == "A8":
             self.begin_dur_entry()
         elif sig == "A9":
-            self.append_dur_digit()
+            self.append_dur_digit(sig)
         elif sig == "A10":
             self.light_selected_led()
         elif sig == "A11":
