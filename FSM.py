@@ -85,7 +85,10 @@ class FiniteStateMachine:
     # begin in FSM’s default init state; repeatedly call get next signal and run rules until the FSM enters its
     # default final state.
     def main_loop(self):
-        return None
+        self.current_state = "s-init"
+        while True:
+            self.current_symbol = self.agent.get_next_signal()
+            self.run_rules()
 
 
 class Rule:
