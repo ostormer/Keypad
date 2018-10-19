@@ -55,20 +55,23 @@ class KPC_agent():
         #reset dur, lid, og muligens passcode buffer
         return
     
-    
-    
     # validere passordendring
+    #a11
     def validate_passcode_change(self):
         if len(self.passcode_buffer) > 3 and self.passcode_buffer.isdigit():
-            f = open(self.password_file_name, 'w')
-            f.write(self.passcode_buffer)
-            f.close()
-            self.current_password = self.passcode_buffer
-
             self.twinkle_leds(3, 0.1)
+            self.change_password()
         else:
             self.flash_leds(3, 0.3)
+            return "N"
 
+    def change_password(self):
+        f = open(self.password_file_name, 'w')
+        f.write(self.passcode_buffer)
+        f.close()
+        self.current_password = self.passcode_buffer
+    
+    
     # adde en char til passcode_buffer 
     #a2
     def add_to_passcode_buffer(self, sig: str):
@@ -105,7 +108,10 @@ class KPC_agent():
         self.ledboard.power_down()
         self.passcode_buffer = ""
         self.lid = 0
-        self.ldur = 0
+        self.ldur = ""
 
-    def states_to_action(self, sig):
+    def agent_do_action(self, sig):
+        if sig == "A1":
+            
+            
         pass
