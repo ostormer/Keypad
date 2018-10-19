@@ -39,15 +39,18 @@ class KPC_agent():
     def verify_login(self):
         if self.current_password == self.passcode_buffer:
             self.override_signal = "Y"
-            self.twinkle_leds(dur, twinkle_dur)  # riktig passord, twinkle leds
+            self.twinkle_leds(3, 0.1)  # riktig passord, twinkle leds
         else:
             self.override_signal = "N"
-            self.flash_leds(dur, flash_dur)  # skrev feil passord, flashe leds
+            self.flash_leds(3, 0.4)  # skrev feil passord, flashe leds
 
     # a4, a5, a6
     def reset_agent_attributes(self):
         # reset dur, lid, og muligens passcode buffer
-        return
+        self.override_signal = ""
+        self.lid = None   # led id
+        self.ldur = ""  # led duration
+        self.passcode_buffer = ""
 
     # validere passordendring
     # a12
