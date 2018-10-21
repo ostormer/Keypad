@@ -26,6 +26,7 @@ class Keypad:
 
     def __init__(self):
         self.rpi_setup()
+        self.prev_sig = ""
 
     def rpi_setup(self):
         GPIO.setmode(GPIO.BCM)
@@ -42,10 +43,18 @@ class Keypad:
             for colm in self.colm_pin:
                 if(GPIO.input(colm) == GPIO.HIGH):
                     GPIO.output(row, GPIO.LOW)
-                    return Keypad.pins_to_sym[(row, colm)]
+                    # set this sig as previous sig, used in falling edge det.
+                    self.prev_sig = Keypad.pins_to_sym[(row, colm)]
+                    return self.prev_sig
+
             GPIO.output(row, GPIO.LOW)
 
     def get_next_signal(self):
+        pre_sig = self.poll_keypad()
+        while pre_sig == self.prev_sig:
+            # still pressing last button pressed, waiting for release
+            pre_sig = self.poll_keypad()
+
         while True:
             sig = self.poll_keypad()
             if sig:
@@ -62,5 +71,5 @@ if __name__ == "__main__":
         print(sig, flush=True, end = "")
 
     print()
-    
+
     GPIO.cleanup()
