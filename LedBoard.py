@@ -2,17 +2,20 @@ import RPi.GPIO as GPIO
 import time
 
 
+GPIO.setmode(GPIO.BCM)
+
+
 class Ledboard:
     """Running the led board, controlling the lights"""
     p0, p1, p2 = 5, 6, 13
 
     led_pins = {
-        0: (5, 6, 13),
-        1: (5, 13, 6),
-        2: (6, 5, 13),
-        3: (6, 13, 5),
-        4: (13, 5, 6),
-        5: (13, 6, 5)
+        0: (6, 5, 13),
+        1: (5, 6, 13),
+        2: (13, 5, 6),
+        3: (5, 13, 6),
+        4: (13, 6, 5),
+        5: (6, 13, 5)
     }
 
     def setup(self):
@@ -27,7 +30,8 @@ class Ledboard:
             GPIO.output(pin, pin_state)
 
     def light_led(self, led_id, led_dur):
-        (hi, lo, dis) = Ledboard.led_pins(led_id)
+        (hi, lo, dis) = Ledboard.led_pins[led_id]
+
         self.set_pin(hi, 1)
         self.set_pin(lo, 0)
         self.set_pin(dis, -1)
@@ -43,7 +47,7 @@ class Ledboard:
         while(time.time() - t0 < dur):
             if time.time() - on_time < flash_dur:
                 for i in range(6):
-                    (hi, lo, dis) = Ledboard.led_pins(i)
+                    (hi, lo, dis) = Ledboard.led_pins[i]
                     self.set_pin(hi, 1)
                     self.set_pin(lo, 0)
                     self.set_pin(dis, -1)
@@ -67,3 +71,17 @@ class Ledboard:
     def power_down(self):
         self.twinkle_all_leds(2.5, 1 / 3)
         self.flash_all_leds(1.5, 0.2)
+
+
+# -------------------------- TESTING -----------------------------
+if __name__ == "__main__":
+    lb = Ledboard()
+    t0 = time.time()
+
+    for i in range(6):
+        lb.light_led(i, 1./6)
+    time.sleep(1)
+    lb.flash_all_leds(5, 0.25)
+    lb.twinkle_all_leds(5, 1./24)
+
+    GPIO.cleanup()
