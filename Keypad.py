@@ -36,15 +36,17 @@ class Keypad:
             GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     def poll_keypad(self):
+        # maybe add sleep() here?
         for row in self.row_pin:
             GPIO.output(row, GPIO.HIGH)
-            sleep(0.01)  # wait to let it turn on
+            sleep(0.01)  # wait to maybe let it turn on
             for colm in self.colm_pin:
                 if(GPIO.input(colm) == GPIO.HIGH):
                     GPIO.output(row, GPIO.LOW)
                     # set this sig as previous sig, used in falling edge det.
                     self.prev_sig = Keypad.pins_to_sym[(row, colm)]
                     return self.prev_sig
+
             GPIO.output(row, GPIO.LOW)
 
     def get_next_signal(self):
