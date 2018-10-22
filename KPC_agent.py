@@ -100,7 +100,8 @@ class KPC_agent():
 
     def twinkle_leds(self, dur, twinkle_dur):
         self.ledboard.twinkle_all_leds(dur, twinkle_dur)
-
+    
+    #a14
     def exit_action(self):
         self.ledboard.power_down()
         self.passcode_buffer = ""
@@ -132,3 +133,5 @@ class KPC_agent():
             self.reset_agent_attributes()
         elif action == "A12":
             self.validate_passcode_change()
+        elif action =="A14":
+            self.exit_action()
