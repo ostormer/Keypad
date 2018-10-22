@@ -40,9 +40,15 @@ class KPC_agent():
         if self.current_password == self.passcode_buffer:
             self.override_signal = "Y"
             self.twinkle_leds(2, 1./30)  # riktig passord, twinkle leds
+            for i in range(10):
+                self.light_one_led(0, 0.1)
+                self.light_one_led(1, 0.1)
         else:
             self.override_signal = "N"
-            self.flash_leds(2, 0.4)  # skrev feil passord, flashe leds
+            self.flash_leds(2, 0.2)  # skrev feil passord, flashe leds
+            for i in range(10):
+                self.light_one_led(4, 0.1)
+                self.light_one_led(5, 0.1)
 
     # a4, a5, a6
     def reset_agent_attributes(self):
@@ -56,10 +62,14 @@ class KPC_agent():
     # a12
     def validate_passcode_change(self):
         if len(self.passcode_buffer) > 3 and self.passcode_buffer.isdigit():
-            self.twinkle_leds(3, 0.1)
+            for i in range(10):
+                self.light_one_led(0, 0.1)
+                self.light_one_led(1, 0.1)
             self.change_password()
         else:
-            self.flash_leds(3, 0.3)
+            for i in range(10):
+                self.light_one_led(4, 0.1)
+                self.light_one_led(5, 0.1)
             return "N"
 
     def change_password(self):
@@ -103,10 +113,8 @@ class KPC_agent():
 
     #a14
     def exit_action(self):
+        self.reset_agent_attributes()
         self.ledboard.power_down()
-        self.passcode_buffer = ""
-        self.lid = 0
-        self.ldur = ""
 
     def agent_do_action(self, action, sig):
         if action == "a1":

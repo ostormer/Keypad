@@ -57,6 +57,9 @@ class Ledboard:
                 self.set_pin(13, 0)
                 time.sleep(flash_dur)
                 on_time = time.time()
+        self.set_pin(hi, 0)
+        self.set_pin(lo, 0)
+        self.set_pin(dis, 0)
 
     def twinkle_all_leds(self, dur, twinkle_dur):
         t0 = time.time()
