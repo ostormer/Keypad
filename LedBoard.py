@@ -41,6 +41,15 @@ class Ledboard:
         self.set_pin(lo, 0)
         self.set_pin(dis, 0)
 
+    def light_multi_leds(self, leds, dur):
+        t0 = time.time()
+        while(time.time() - t0 < dur):
+            for led_id in leds:
+                (hi, lo, dis) = Ledboard.led_pins[led_id]
+                self.set_pin(hi, 1)
+                self.set_pin(lo, 0)
+                self.set_pin(dis, -1)
+
     def flash_all_leds(self, dur, flash_dur):
         t0 = time.time()
         on_time = t0
