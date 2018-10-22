@@ -14,5 +14,6 @@ A10 light_the_led - blinker
 A11  = A4,A5,A6
 A12 validate_passcode_change, blinker med led om det gyldig eller ikke, returnerer ingenting 
 (A13 change_passcode) A13 kan være inni A12, mest hensiktsmessig 
+a14 agent logut, spiller av lyssekvens som symboliserer logut
 
 Kan kutte ned til A1, A2, A3, A4, A7, A8, A9, A10, A12 

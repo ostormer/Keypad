@@ -1,12 +1,18 @@
-# setting some methods that we will use
+# import test to se if rule.symbol is a function
+
+
+from inspect import isfunction
+
+# setting some methods/functions that we will use
+
 
 def all_symbols(symbol): return symbol is not None
 
+
 def all_digits(symbol): return 48 <= ord(symbol) <= 57
 
+
 def led_id(signal): return 48 <= ord(signal) <= 53
-
-
 
 
 class FiniteStateMachine:
@@ -46,12 +52,8 @@ class FiniteStateMachine:
 
         self.add_rule("s-read3", "s-read3", all_digits, "a12")  # append digit i nytt passord
         self.add_rule("s-read3", "s-active", "*", "a13")  # valider at nytt passord har 4 chars og sett som nytt passord
-
-
-
-
-
-
+        self.add_rule("s-logout", "s-init", "#", "a14")  # logger oss helt ut (to "#" på rad)
+        self.add_rule("s-logout", "s-active", all_symbols, "a4")  # soft reset, går tilbake til s-active
 
     # add new rule to FSM’s rule list.
     def add_rule(self, state1, state2, symbol, action):  # we assume that the specs of the rule are already defined
@@ -63,32 +65,34 @@ class FiniteStateMachine:
 
     # go through rule list; fire first matching rule.
     def run_rules(self):
+        for rule in self.rule_list:  # går igjennom alle regler
+            if self.apply_rule(rule):  # sjekker om regel er riktig, returnerer true
+                self.fire_rule(rule)  # utfører regelen
+                break
 
     # check whether rule conditions match current context.
-
-    #uferdig kode:
     def apply_rule(self, rule):  # tar inn en regel
         correct_state = False  # brukes for å hjelpe returneringslogikken
-        if self.current_state == rule.current_state:  # sammenligner regelens state med vår faktisk
+        if self.current_state == rule.current_state:  # sammenligner regelens state med vår faktiske state
             correct_state = True
-        correct_symbol = False
-        if isfunction(rule.signal):
-            correct_symbol = rule.signal(self.current_symbol)
-        elif isinstance(rule.signal, str):
-            correct_symbol = (rule.signal == self.current_symbol)
-        return correct_state and correct_symbol
+        if isfunction(rule.signal):  # sjekker om symbolet til regelen er en funksjon
+            correct_symbol = rule.signal(self.current_symbol)  # correct_symbol blir true hvis symbol matcher regel
+        else:
+            correct_symbol = (rule.signal == self.current_symbol)  # correct_symbol blir true hvis symbol matcher regel
+        return correct_state and correct_symbol  # dobbel returneringslogikk
 
     # use rule consequent to a) change FSM state, b) call agent action method.
-    def fire_rule(self):
-        return None
+    def fire_rule(self, rule):
+        self.current_state = rule.state2  # flytter oss til neste state
+        self.current_action = rule.action  # skifter hvilken action vi har før vi sender til agenten
+        self.agent.agent_do_action(self.current_action, self.current_symbol)  # sender til agenten
 
     # begin in FSM’s default init state; repeatedly call get next signal and run rules until the FSM enters its
     # default final state.
     def main_loop(self):
-        self.current_state = "s-init"
         while True:
-            self.current_symbol = self.agent.get_next_signal()
-            self.run_rules()
+            self.current_symbol = self.agent.get_next_signal()  # setter current symbol til input fra keypad
+            self.run_rules()  # kjører igjennom alle regler basert på det nye symbolet fra agenten
 
 
 class Rule:
@@ -98,5 +102,3 @@ class Rule:
         self.state2 = state2
         self.symbol = symbol
         self.action = action
-
-
