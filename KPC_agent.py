@@ -109,24 +109,30 @@ class KPC_agent():
         self.ldur = ""
 
     def agent_do_action(self, action, sig):
-        if action == "A1":
+        if action == "a1":
             print("Powering up")
             self.init_passcode_entry()
-        elif action == "A2":
+        elif action == "a2":
+            print("Add %s to buffer" % sig)
             self.add_to_passcode_buffer(sig)
-        elif action == "A3":
+        elif action == "a3":
+            print("Verifying login")
             self.verify_login()
-        elif action in ["A4","A5","A6","A11"]:
+        elif action in ["a4","a5","a6","a11"]:
+            print("Reseting agent attributes")
             self.reset_agent_attributes()
-        elif action == "A7":
+        elif action == "a7":
+            print("Setting led-id to %s" % sig)
             self.set_led_id(sig)
-        elif action == "A8":
+        elif action == "a8":
             self.begin_dur_entry()
-        elif action == "A9":
+        elif action == "a9":
             self.append_dur_digit(sig)
-        elif action == "A10":
+        elif action == "a10":
             self.light_selected_led()
-        elif action == "A12":
+        elif action == "a12":
             self.validate_passcode_change()
-        elif action =="A14":
+        elif action =="a14":
             self.exit_action()
+        else:
+            print("Rule %s is not recognised" % action)

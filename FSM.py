@@ -70,7 +70,7 @@ class FiniteStateMachine:
             if self.apply_rule(rule):  # sjekker om regel er riktig, returnerer true
                 self.fire_rule(rule)  # utfører regelen
                 break
-
+        print("Trying to run rules, couldn't find anything")
     # check whether rule conditions match current context.
     def apply_rule(self, rule):  # tar inn en regel
         correct_state = False  # brukes for å hjelpe returneringslogikken
@@ -84,6 +84,7 @@ class FiniteStateMachine:
 
     # use rule consequent to a) change FSM state, b) call agent action method.
     def fire_rule(self, rule):
+        print("Firing rule %s" % rule)
         self.current_state = rule.state2  # flytter oss til neste state
         self.current_action = rule.action  # skifter hvilken action vi har før vi sender til agenten
         self.agent.agent_do_action(self.current_action, self.current_symbol)  # sender til agenten
@@ -93,6 +94,7 @@ class FiniteStateMachine:
     def main_loop(self):
         while True:
             self.current_symbol = self.agent.get_next_signal()  # setter current symbol til input fra keypad
+            print("Current symbol:  %s" % self.current_symbol)
             self.run_rules()  # kjører igjennom alle regler basert på det nye symbolet fra agenten
 
 
@@ -103,3 +105,6 @@ class Rule:
         self.state2 = state2
         self.symbol = symbol
         self.action = action
+
+    def __str__(self):
+        return("Action: %s" % (self.action))
