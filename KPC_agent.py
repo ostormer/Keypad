@@ -126,7 +126,7 @@ class KPC_agent():
         elif action == "a3":
             print("Verifying login")
             self.verify_login()
-        elif action in ["a4","a5","a6","a11"]:
+        elif action == "a4":
             print("Reseting agent attributes")
             self.reset_agent_attributes()
         elif action == "a7":
