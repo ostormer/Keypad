@@ -1,6 +1,5 @@
 # import test to se if rule.symbol is a function
-
-
+from KPC_agent import *
 from inspect import isfunction
 
 # setting some methods/functions that we will use
@@ -18,6 +17,8 @@ def led_id(signal): return 48 <= ord(signal) <= 53
 class FiniteStateMachine:
 
     def __init__(self):
+        self.agent = KPC_agent()
+
         self.rule_list = []
         self.current_state = "s-init"
         self.current_action = "a0"
@@ -30,7 +31,7 @@ class FiniteStateMachine:
         self.add_rule("s-read1", "s-init", all_symbols, "a4")  # sender oss tilbake til init ved "#"
 
         self.add_rule("s-verify1", "s-active", "Y", "a5")  # sender oss til s-active om passord er rett
-        self.add_rule("s-verify1", "s-init", all_symbols(), "a4")  # sender oss til s-init om passord er feil
+        self.add_rule("s-verify1", "s-init", all_symbols, "a4")  # sender oss til s-init om passord er feil
 
         self.add_rule(self.current_state, "s-logout", "#", "a6")  # etter s-active vil "#" alltid sende oss til logout
 
@@ -73,12 +74,12 @@ class FiniteStateMachine:
     # check whether rule conditions match current context.
     def apply_rule(self, rule):  # tar inn en regel
         correct_state = False  # brukes for å hjelpe returneringslogikken
-        if self.current_state == rule.current_state:  # sammenligner regelens state med vår faktiske state
+        if self.current_state == rule.state1:  # sammenligner regelens state med vår faktiske state
             correct_state = True
-        if isfunction(rule.signal):  # sjekker om symbolet til regelen er en funksjon
-            correct_symbol = rule.signal(self.current_symbol)  # correct_symbol blir true hvis symbol matcher regel
+        if isfunction(rule.symbol):  # sjekker om symbolet til regelen er en funksjon
+            correct_symbol = rule.symbol(self.current_symbol)  # correct_symbol blir true hvis symbol matcher regel
         else:
-            correct_symbol = (rule.signal == self.current_symbol)  # correct_symbol blir true hvis symbol matcher regel
+            correct_symbol = (rule.symbol == self.current_symbol)  # correct_symbol blir true hvis symbol matcher regel
         return correct_state and correct_symbol  # dobbel returneringslogikk
 
     # use rule consequent to a) change FSM state, b) call agent action method.
