@@ -107,28 +107,28 @@ class KPC_agent():
         self.lid = 0
         self.ldur = ""
 
-    def agent_do_action(self, sig):
-        if sig == "A1":
+    def agent_do_action(self, action, sig):
+        if action == "A1":
             self.init_passcode_entry()
-        elif sig == "A2":
+        elif action == "A2":
             self.add_to_passcode_buffer(sig)
-        elif sig == "A3":
+        elif action == "A3":
             self.verify_login()
-        elif sig == "A4":
+        elif action == "A4":
             self.reset_agent_attributes()
-        elif sig == "A5":
+        elif action == "A5":
             self.reset_agent_attributes()
-        elif sig == "A6":
+        elif action == "A6":
             self.reset_agent_attributes()
-        elif sig == "A7":
+        elif action == "A7":
             self.set_led_id(sig)
-        elif sig == "A8":
+        elif action == "A8":
             self.begin_dur_entry()
-        elif sig == "A9":
+        elif action == "A9":
             self.append_dur_digit(sig)
-        elif sig == "A10":
+        elif action == "A10":
             self.light_selected_led()
-        elif sig == "A11":
+        elif action == "A11":
             self.reset_agent_attributes()
-        elif sig == "A12":
+        elif action == "A12":
             self.validate_passcode_change()
