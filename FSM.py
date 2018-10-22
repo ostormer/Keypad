@@ -53,7 +53,7 @@ class FiniteStateMachine:
         self.add_rule("s-read3", "s-read3", all_digits, "a12")  # append digit i nytt passord
         self.add_rule("s-read3", "s-active", "*", "a13")  # valider at nytt passord har 4 chars og sett som nytt passord
         self.add_rule("s-logout", "s-init", "#", "a14")  # logger oss helt ut (to "#" på rad)
-        self.add_rule("S-logout", "s-active", all_symbols, "a4")  # soft reset, går tilbake til s-active
+        self.add_rule("s-logout", "s-active", all_symbols, "a4")  # soft reset, går tilbake til s-active
 
     # add new rule to FSM’s rule list.
     def add_rule(self, state1, state2, symbol, action):  # we assume that the specs of the rule are already defined
